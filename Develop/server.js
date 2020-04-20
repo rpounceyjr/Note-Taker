@@ -11,36 +11,33 @@ app.use(express.json());
 
 //Routes
 app.get("/api/notes", function (req, res) {
-    const notes = fs.readFile(__dirname + "/db/db.json", function (err) {
+
+    fs.readFile(__dirname + "/db/db.json", function (err, data) {
         if (err) {
             console.log(err);
         } else {
-            console.log("File read.")
-            return notes
+            console.log("Notes obtained");
         }
+        return res.end(data);
+
     })
-    return res.json(notes);
-});
-// * POST `/api/notes` - Should receive a new note to save on the 
-//request body, add it to the `db.json` file, and then return 
-//the new note to the client.
+})
+
 app.post("/api/notes", function (req, res) {
     var newNote = req.body;
-    
+
     console.log(newNote);
-    fs.appendFile(__dirname + "/db/db.json", JSON.stringify(newNote), function(err){
-        if(err){
+    fs.appendFile(__dirname + "/db/db.json", JSON.stringify(newNote), function (err) {
+        if (err) {
             console.log(err)
-        }else{
+        } else {
             console.log("Note taken")
         }
-    } )
-
-
-    res.json(newNote);
-})
+    })
+    return res.json(newNote);
+});
 
 //This is the server listener
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
-});
+})
