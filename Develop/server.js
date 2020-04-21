@@ -23,17 +23,17 @@ app.get("/notes.html", function (req, res) {
 //API route for getting notes
 app.get("/api/notes", function (req, res) {
 
-    fs.readFile(__dirname + "/db/db.json", function (err, data) {
+    fs.readFile("/db/db.json", function (err, data) {
         if (err) {
             console.log(err);
         } else {
             console.log("Notes obtained");
         }
-        return res.end(data);
+        return res.json(data);
 
     })
 })
-//api route for posting notes
+//API route for posting notes
 app.post("/api/notes", function (req, res) {
     var newNote = req.body;
 
