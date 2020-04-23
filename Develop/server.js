@@ -32,6 +32,7 @@ app.get("/api/notes", function (req, res) {
 //API route for posting notes
 app.post("/api/notes", function (req, res) {
     let newNote = req.body;
+    newNote.id = newNote.title.replace(/\s+/g, "").toLowerCase();
     const notesArrayForPost = [];
 
     console.log(newNote);
@@ -77,7 +78,7 @@ app.delete("/api/notes/:title", function (req, res) {
                 //the user inputs the title without any spaces as part of the path and that 
                 //is checked against every title in the db.  Regex is used to remove the spaces from the 
                 //titles and .toLowerCase is used to make the titles lower case                
-                if (id === formattedDataForDelete[i].title.replace(/\s+/g, "").toLowerCase()) {
+                if (id === formattedDataForDelete[i].id) {
                     noteToDelete = formattedDataForDelete[i];
                 } else {
                     notesToKeepArray.push(formattedDataForDelete[i])
