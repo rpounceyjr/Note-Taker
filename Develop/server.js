@@ -22,9 +22,10 @@ app.get("/api/notes", function (req, res) {
             console.log(err);
         } else {
             console.log("Notes obtained");
+            res.send(JSON.parse(data));
         }
-        return res.send(data);
     })
+    
 })
 
 
@@ -52,7 +53,7 @@ app.post("/api/notes", function (req, res) {
                 console.log("Note taken")
             }
         })
-        return res.json(newNote);
+        res.json(newNote);
     });
 
 })
