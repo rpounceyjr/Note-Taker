@@ -2,7 +2,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-const util = require("util");
+// const util = require("util");
 
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
 
 //Routes
 //API route for getting notes
@@ -27,7 +26,6 @@ app.get("/api/notes", function (req, res) {
     })
     
 })
-
 
 //API route for posting notes
 app.post("/api/notes", function (req, res) {
@@ -59,25 +57,18 @@ app.post("/api/notes", function (req, res) {
 
 })
 
-
-
 //API route for deleting a note
-app.delete("/api/notes/:title", function (req, res) {
-    let id = req.params.title;
+app.delete("/api/notes/:id", function (req, res) {
+    let id = req.params.id;
     let noteToDelete;
     let notesToKeepArray = [];
-
 
     fs.readFile(__dirname + "/db/db.json", "utf-8", function (err, data) {
         if (err) {
             console.log(err);
         } else {
             let formattedDataForDelete = JSON.parse(data);
-            for (let i = 0; i < formattedDataForDelete.length; i++) {
-                //the id for req.params is just the title of the note without anyspaces
-                //the user inputs the title without any spaces as part of the path and that 
-                //is checked against every title in the db.  Regex is used to remove the spaces from the 
-                //titles and .toLowerCase is used to make the titles lower case                
+            for (let i = 0; i < formattedDataForDelete.length; i++) {               
                 if (id === formattedDataForDelete[i].id) {
                     noteToDelete = formattedDataForDelete[i];
                 } else {
@@ -90,12 +81,13 @@ app.delete("/api/notes/:title", function (req, res) {
                 console.log(err)
             } else {
                 console.log("Note removed")
-                res.send(notesToKeepArray);
+                res.json(notesToKeepArray);
             }
         })
     });
 
 })
+
 //HTML route for notes.html
 app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/notes.html"));
@@ -104,8 +96,6 @@ app.get("/notes", function (req, res) {
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"))
 });
-
-
 
 //This is the server listener
 app.listen(PORT, function () {
