@@ -30,7 +30,7 @@ app.get("/api/notes", function (req, res) {
 //API route for posting notes
 app.post("/api/notes", function (req, res) {
     let newNote = req.body;
-    newNote.id = newNote.title.replace(/\s+/g, "").toLowerCase();
+    newNote.id = Date.now().toString();
     const notesArrayForPost = [];
 
     console.log(newNote);
