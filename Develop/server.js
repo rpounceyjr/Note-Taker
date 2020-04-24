@@ -87,12 +87,15 @@ app.delete("/api/notes/:id", function (req, res) {
     });
 
 })
-
+//HTML route for index.html
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname + "/public/index.html"))
+});
 //HTML route for notes.html
 app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/notes.html"));
 });
-//HTML route for index.html
+//HTML route for index.html for everything other than /
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname + "/public/index.html"))
 });
